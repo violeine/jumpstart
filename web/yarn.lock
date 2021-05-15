@@ -67,9 +67,9 @@
   integrity sha512-sqKVVVOe5ivCaXDWivIJYVSaEgdQK9ul7a4Kity5Iw7u9+wBAPbX1RMSnLLmp7O4Vzj0WOWwMAJsTL00xwaNug==
 
 "@moai/core@^1.0.0-rc6":
-  version "1.0.0-rc6"
-  resolved "https://registry.yarnpkg.com/@moai/core/-/core-1.0.0-rc6.tgz#bf200f77bb5e2e48231e714abe174a906469a54d"
-  integrity sha512-SP3pUZwjK/G4bd1hQku5NKld7169z8rgITOV2nNoB3n39sNrR4E/sj61z2UOGyduLiPD7pENkIQM+BGZrL8VhA==
+  version "1.0.0-rc7"
+  resolved "https://registry.yarnpkg.com/@moai/core/-/core-1.0.0-rc7.tgz#9076e781db7b031585ecc2389656ff9e66b7291e"
+  integrity sha512-SvemL7mPb1JtSfMQPs7xqC5kE0yBFEZMx5SThi8RhHdLnyUuaLusjmZsv4S5n9ztzugsWDYP5LhBgXQK9rKafA==
   dependencies:
     "@popperjs/core" "2.9.2"
     "@tippyjs/react" "4.2.5"
@@ -1254,11 +1254,11 @@ is-string@^1.0.5:
   integrity sha512-2gdzbKUuqtQ3lYNrUTQYoClPhm7oQu4UdpSZMp1/DGgkHBT8E2Z1l0yMdb6D4zNAxwDiMv8MdulKROJGNl0Q0w==
 
 is-symbol@^1.0.2, is-symbol@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/is-symbol/-/is-symbol-1.0.3.tgz#38e1014b9e6329be0de9d24a414fd7441ec61937"
-  integrity sha512-OwijhaRSgqvhm/0ZdAcXNZt9lYdKFpcRDT5ULUuYXPoT794UNOdU+gpT6Rzo7b4V2HUl/op6GqY894AZwv9faQ==
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/is-symbol/-/is-symbol-1.0.4.tgz#a6dac93b635b063ca6872236de88910a57af139c"
+  integrity sha512-C/CPBqKWnvdcxqIARxyOh4v1UUEOCHpgDa0WYgpKDFMszcrPcffg5uhwSgPCLD2WWxmq6isisz87tzT01tuGhg==
   dependencies:
-    has-symbols "^1.0.1"
+    has-symbols "^1.0.2"
 
 is-typed-array@^1.1.3:
   version "1.1.5"
