@@ -24,22 +24,30 @@ export default function Light({ ws, message }: Props): JSX.Element {
 
   useEffect(() => {
     const [From, cmd, ...result] = message.split(":");
-    if (From == "Light" && cmd == "Res") {
-      setColor(RGBtoHex(JSON.parse(result?.join(":"))));
+    if (From === "Light") {
+      switch (cmd) {
+        case "Res":
+          setColor(RGBtoHex(JSON.parse(result?.join(":"))));
+          break;
+        case "Alive":
+          setAlive(true);
+          break;
+        case "Dead":
+          setAlive(false);
+          break;
+      }
     }
   }, [message]);
 
-  useEffect(() => {
-    ws.current?.send("Light:get");
-  }, [ws.current]);
-
   const [color, setColor] = useState<string>("#ffffff");
   const [brightness, setBrightness] = useState<number>(100);
+  const [alive, setAlive] = useState(false);
   useEffect(() => {
     send({ ...hexToRGB(color), brightness });
   }, [color, brightness]);
   return (
     <div className="flex w-full justify-around items-center">
+      <div className={`w-8 h-8 ${alive ? "bg-green-300" : "bg-red-500"}`}></div>
       <Button onClick={() => ws.current?.send("Light:get")} highlight>
         get current color
       </Button>
