@@ -52,45 +52,99 @@ app.post("/weather", (req, res) => {
   console.log(req.body.location);
   exec(`bash weather.sh ${req.body.location}`);
 });
+
 function broadcast(ws, message) {
   ws.clients.forEach((c) => c.send(message));
 }
+
+function heartbeat() {
+  this.isAlive = true;
+  clients["Web"]?.send(`${this.job}:Alive`);
+}
+
+function ping() {
+  [...Object.entries(clients)].forEach(([job, s]) => {
+    if (s.isAlive === false) {
+      clients["Web"]?.send(`${job}:Dead`);
+    }
+    s.isAlive = false;
+    s.ping(() => {});
+  });
+}
+
 ws.on("connection", function (socket, req) {
+  socket.ip = req.socket.remoteAddress;
+  socket.isAlive = true;
+
+  socket.on("pong", heartbeat);
+
   socket.on("message", function (message) {
     if (message.startsWith("Reg:")) {
       const job = message.split(":")[1];
       clients[job] = socket;
+      socket.job = job;
+      if (job === "Web") {
+        ping();
+        clients["Light"]?.send("get");
+      }
       clients["Web"]?.send(
         `Job ${job} was register to ${req.socket.remoteAddress}`
       );
+      console.log(`Job ${job} was register to ${req.socket.remoteAddress}`);
     }
     const [For, cmd, ...rest] = message.split(":");
-    if (socket === clients["Web"]) {
-      console.log("send from web");
+
+    if (For === "All") {
+      if (cmd === "CheckHealth") {
+        ping();
+      }
     }
 
     if (For === "Light") {
       if (cmd == "get") {
         clients[For]?.send("get");
       }
+
       if (cmd == "Color") {
         clients[For]?.send(rest.join(":"));
       }
+
       if (cmd == "Res") {
-        broadcast(ws, message);
+        clients["Web"]?.send(message);
       }
     }
 
-    if (socket === clients["Rain"]) {
-      console.log("send from rain");
+    if (For === "Fire") {
+      switch (cmd) {
+        case "Object":
+          clients["Web"]?.send(message);
+          break;
+        case "Ambient":
+          clients["Web"]?.send(message);
+          break;
+        case "get":
+          clients[For]?.send("get-temp");
+          break;
+      }
     }
 
-    if (socket === clients["Light"]) {
-      console.log("send from Light");
+    if (For === "Rain") {
+      switch (cmd) {
+        case "isRain?":
+          clients["Web"]?.send(message);
+          break;
+        case "get":
+          clients[For]?.send("get-rain");
+          break;
+      }
     }
-
     // broadcast(ws, message);
   });
+});
+
+const interval = setInterval(ping, 30 * 1000);
+ws.on("close", function () {
+  clearInterval(interval);
 });
 server.listen(3001);
 console.log("Server listening on port 3001");
