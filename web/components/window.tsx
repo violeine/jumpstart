@@ -12,7 +12,8 @@ export const Window = ({
   return (
     <div className="bg-white rounded flex flex-col shadow-md h-full relative">
       <div className="w-full flex justify-between rounded-t bg-blue-100 text-blue-500 items-center py-1 px-2">
-        <span className="flex-grow text-current capitalize text-md font-semibold">
+        <div></div>
+        <span className="text-current capitalize text-md font-semibold">
           {name}
         </span>
         <div

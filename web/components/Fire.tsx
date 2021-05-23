@@ -60,9 +60,9 @@ const WindowPane = ({
   return (
     <div
       className="w-32 h-32 shadow flex flex-col items-center p-2 relative"
-      style={{ backgroundColor: `hsla(${hue(CtoF(value))}, 100%, 50%, 0.7)` }}
+      style={{ color: `hsla(${hue(CtoF(value))}, 100%, 50%, 0.7)` }}
     >
-      <span className="font-light text-lg">{name}</span>
+      <span className="font-light text-lg text-black">{name}</span>
       <span className="text-3xl font-semibold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         {value}&deg;C
       </span>
