@@ -9,11 +9,15 @@
   },
   "dependencies": {
     "@moai/core": "^1.0.0-rc6",
+    "@types/react-color": "^3.0.4",
     "autoprefixer": "^10.2.5",
+    "chroma-js": "^2.1.2",
     "next": "10.2.0",
     "postcss": "^8.2.14",
     "react": "17.0.2",
+    "react-color": "^2.19.3",
     "react-dom": "17.0.2",
+    "react-picker": "^1.2.17",
     "tailwindcss": "^2.1.2"
   },
   "devDependencies": {

@@ -1,12 +1,7 @@
 import Head from "next/head";
-import { Input, Button, InputSize } from "@moai/core";
-import Light from "components/Light";
 import Web from "components/Web";
-import Fire from "components/Fire";
-import Rain from "components/Rain";
 import { useRef, useState, useEffect, EffectCallback } from "react";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { hexToRGB } from "utils/colors";
 
 interface payload extends Partial<Color> {
   brightness?: number;
@@ -40,8 +35,8 @@ export default function Home({ host }: { host: string }): JSX.Element {
 
   return (
     <div
-      className="sm:container mx-auto bg-gray-300 min-h-screen flex items-center justify-center
-    flex-col"
+      className="sm:container mx-auto min-h-screen flex items-center justify-center
+    flex-col h-screen"
     >
       <Head>
         <title>Jump start</title>
@@ -50,9 +45,6 @@ export default function Home({ host }: { host: string }): JSX.Element {
       </Head>
 
       <Web ws={ws} message={message} />
-      <Light ws={ws} message={message} />
-      <Fire ws={ws} message={message} />
-      <Rain ws={ws} message={message} />
     </div>
   );
 }

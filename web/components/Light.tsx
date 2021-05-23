@@ -2,7 +2,8 @@ import { Button, Input } from "@moai/core";
 import { useEffect, useState } from "react";
 import { MutableRefObject, Ref } from "react";
 import { hexToRGB, Color, RGBtoHex } from "utils/colors";
-
+import { ChromePicker, ColorChangeHandler, ColorResult } from "react-color";
+import { Window } from "./window";
 Input.sizes.large = {
   ...Input.sizes.large,
   mainColor: "w-64 h-64",
@@ -45,30 +46,38 @@ export default function Light({ ws, message }: Props): JSX.Element {
   useEffect(() => {
     send({ ...hexToRGB(color), brightness });
   }, [color, brightness]);
+  const handleColorChange: ColorChangeHandler = (color: ColorResult) =>
+    setColor(color.hex);
   return (
-    <div className="flex w-full justify-around items-center">
-      <div className={`w-8 h-8 ${alive ? "bg-green-300" : "bg-red-500"}`}></div>
-      <Button onClick={() => ws.current?.send("Light:get")} highlight>
-        get current color
-      </Button>
-      <div>
-        <Input
-          type="color"
-          value={color}
-          setValue={(e) => setColor(e)}
-          style={Input.styles.flat}
-          size={Input.sizes.large}
-        />
-      </div>
-      <div>
-        <input
-          type="range"
-          name="brightness"
-          value={brightness}
-          max={255}
-          onChange={(e) => setBrightness(Number(e.target.value))}
-        />
-      </div>
+    <div className="flex flex-col">
+      <Window name="light" alive={alive}>
+        <div className="flex justify-between h-full space-x-2">
+          <div>
+            <ChromePicker
+              color={color}
+              disableAlpha
+              onChange={handleColorChange}
+            />
+          </div>
+          <div className="flex flex-col items-center justify-center h-full">
+            <div className="mb-8 bg-white p-2 shadow">
+              <label className="flex items-center">
+                <span className="mr-2 rounded"> Brightness:</span>
+                <input
+                  type="range"
+                  name="brightness"
+                  value={brightness}
+                  max={255}
+                  onChange={(e) => setBrightness(Number(e.target.value))}
+                />
+              </label>
+            </div>
+            <Button onClick={() => ws.current?.send("Light:get")} highlight>
+              get current color
+            </Button>
+          </div>
+        </div>
+      </Window>
     </div>
   );
 }

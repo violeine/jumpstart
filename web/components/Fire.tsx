@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { Button } from "@moai/core";
+import { useState, useEffect, useMemo, CSSProperties } from "react";
+import { Button, DivEm } from "@moai/core";
+import { Window } from "./window";
 import Props from "./props";
 
 export default function Fire({ ws, message }: Props): JSX.Element {
@@ -29,22 +30,42 @@ export default function Fire({ ws, message }: Props): JSX.Element {
     ws.current?.send("Fire:get");
   };
   return (
-    <div className="w-96 h-96">
-      <pre>{message}</pre>
-      <div
-        className={`w-8 h-8 rounded-full ${
-          alive ? "bg-green-300" : "bg-red-500"
-        }`}
-      ></div>
-      <div>
-        Object <span>{object}</span>
-      </div>
-      <div>
-        Ambient <span>{ambient}</span>
-      </div>
-      <Button highlight onClick={getTemp}>
-        get temp
-      </Button>
+    <div>
+      <Window name="Fire" alive={alive}>
+        <div className="flex w-full space-x-2">
+          <WindowPane name="Object" value={object || 32} />
+          <WindowPane name="Ambient" value={ambient || 32} />
+        </div>
+        <div className="flex justify-center mt-2">
+          <Button highlight onClick={getTemp}>
+            get temp
+          </Button>
+        </div>
+      </Window>
     </div>
   );
 }
+
+const WindowPane = ({
+  name,
+  value,
+}: {
+  name: string;
+  value: number;
+}): JSX.Element => {
+  const CtoF = (a: number): number => (a * 9) / 5 + 32;
+
+  const hue = (temp: number): number => 200 + 160 * (temp / 100);
+  console.log(hue(CtoF(value)));
+  return (
+    <div
+      className="w-32 h-32 shadow flex flex-col items-center p-2 relative"
+      style={{ backgroundColor: `hsla(${hue(CtoF(value))}, 100%, 50%, 0.7)` }}
+    >
+      <span className="font-light text-lg">{name}</span>
+      <span className="text-3xl font-semibold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        {value}&deg;C
+      </span>
+    </div>
+  );
+};
