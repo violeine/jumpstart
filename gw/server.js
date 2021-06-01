@@ -41,6 +41,7 @@ app.post("/stop", (req, res) => {
     }
   );
 });
+
 const clients = {};
 app.get("/clients", (_, res) => res.send(JSON.stringify(clients)));
 app.post("/weather", (req, res) => {
@@ -54,7 +55,8 @@ app.post("/weather", (req, res) => {
 });
 
 function broadcast(ws, message) {
-  ws.clients.forEach((c) => c.send(message));
+  const registered = Object.values(clients);
+  ws?.clients?.forEach((c) => !registered.includes(c) && c.send(message));
 }
 
 function heartbeat() {
@@ -118,9 +120,11 @@ ws.on("connection", function (socket, req) {
       switch (cmd) {
         case "Object":
           clients["Web"]?.send(message);
+          broadcast(ws, message);
           break;
         case "Ambient":
           clients["Web"]?.send(message);
+          broadcast(ws, message);
           break;
         case "get":
           clients[For]?.send("get-temp");
@@ -132,6 +136,7 @@ ws.on("connection", function (socket, req) {
       switch (cmd) {
         case "isRain?":
           clients["Web"]?.send(message);
+          broadcast(ws, message);
           break;
         case "get":
           clients[For]?.send("get-rain");

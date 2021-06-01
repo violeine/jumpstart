@@ -20,7 +20,9 @@ interface payload extends Partial<Color> {
 export default function Light({ ws, message }: Props): JSX.Element {
   function send(payload: payload): void {
     ws.current?.readyState === ws.current?.OPEN &&
-      ws.current?.send(`Light:Color:${JSON.stringify(payload)}`);
+      ws.current?.send(
+        `Light:Color:${JSON.stringify({ ...payload, cmd: "Light" })}`
+      );
   }
 
   useEffect(() => {
